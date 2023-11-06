@@ -16,7 +16,7 @@ def index(request):
         url = request.POST["url"]
         l = Listing(user = user,title = name,description = desc, url = url)                        #Creating a listing
         l.save()
-        b = Bid(user = user, listing = l, bid = bid,current_bidder = user )
+        b = Bid(listing = l, bid = bid,current_bidder = user )
         b.save()
     listings = Listing.objects.all()
     return render(request, "auctions/index.html",{

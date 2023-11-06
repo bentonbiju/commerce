@@ -18,7 +18,6 @@ class Listing(models.Model):
 
 
 class Bid(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="bid_user")
-    listing = models.ForeignKey(Listing,on_delete=models.CASCADE,related_name = "bid_listing")
+    listing = models.OneToOneField(Listing,on_delete=models.CASCADE,related_name = "bid_listing")
     bid = models.IntegerField()
-    current_bidder = models.ForeignKey(User,on_delete=models.CASCADE,related_name="current_bidder",default = "benton")
+    current_bidder = models.OneToOneField(User,on_delete=models.CASCADE,related_name="current_bidder",default = "benton")

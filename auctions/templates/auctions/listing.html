@@ -1,0 +1,26 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h1>Listing:{{ listing.title }}</h1>
+    {% if user.is_authenticated %}
+        {% if appear == 1 %}
+            <form action = "{% url 'watchlist' listing.id %}">
+                <input type = "submit" value ="Add to watchlist">
+            </form>
+        {% else %}
+            <h6>It is already in you're watchlist</h6>
+        {% endif %}
+    {% endif %}
+    <centre><img src = "{{ listing.url }}" width = "500" height="300"></centre><br>
+    Description: {{ listing.description }}
+    <h4>Current Price:{{ bid_object.bid }}</h4>
+    {% if user.is_authenticated %}
+            <form action = "{% url 'bidding' listing.id %}" method = "POST">
+                {% csrf_token %}
+                <input type = "text" placeholder="Enter a bid" name = "bid_value">
+                <input type = "submit" value = "Place bid">
+            </form>
+    {% endif %}
+    
+{% endblock %}
+

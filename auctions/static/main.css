@@ -14,3 +14,10 @@ body{
     margin-bottom: 20px;
     border: 2px solid lightgray;
 }
+
+#comment-divider{
+    border: none;
+    height: 4px;
+    background: darkgrey;
+}
+

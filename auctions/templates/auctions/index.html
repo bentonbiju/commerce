@@ -6,23 +6,26 @@
         {% csrf_token %}
         <label for="entry_title">Enter the name of the product:</label>
         <input type = "text" id = "entry_title" name = "entry_title"><br>
-        <label for="description">Enter a description for the product:</label><br>
+        <label for="contents">Enter a description for the product:</label><br>
         <textarea id = "contents" name="description" rows = "3" cols = "100"></textarea><br>
         <label for="bid">Enter the starting bid you would like for the product:</label>
         <input type = "text" id = "bid" name ="starting_bid"><br>
-        <label for="bid">Enter the url of the image you would like for you're product:</label>
+        <label for="url">Enter the url of the image you would like for you're product:</label>
         <input type = "text" id = "url" name ="url"><br>
+        <label for="category">Enter the category of you're product:</label>
+        <input type = "text" id = "category" name ="category"><br>
         <button>Create Listing</button>
     </form>
     
     {% else %}
     <h2 id = "listing" >Active Listings</h2>
         <div class = "container">
-        {% for listing in listings %}
+        {% for listing,bid in combined_list %}
         <div>
             <h3><a href = "{% url 'listing' listing.id %}">{{ listing.title }}</a></h3>
             <img src = "{{ listing.url }}" width = "200" height="200"><br>
-            Description: {{ listing.description }}
+            Description: {{ listing.description }}<br>
+            Current Price: {{ bid}}
         </div>
         {% endfor %}
         </div>

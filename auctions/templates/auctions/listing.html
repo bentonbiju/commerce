@@ -8,19 +8,55 @@
                 <input type = "submit" value ="Add to watchlist">
             </form>
         {% else %}
-            <h6>It is already in you're watchlist</h6>
+        <form action = "{% url 'remove_watchlist' listing.id %}">
+            <input type = "submit" value ="Remove from watchlist">
+        </form>
         {% endif %}
     {% endif %}
     <centre><img src = "{{ listing.url }}" width = "500" height="300"></centre><br>
     Description: {{ listing.description }}
-    <h4>Current Price:{{ bid_object.bid }}</h4>
-    {% if user.is_authenticated %}
-            <form action = "{% url 'bidding' listing.id %}" method = "POST">
-                {% csrf_token %}
-                <input type = "text" placeholder="Enter a bid" name = "bid_value">
-                <input type = "submit" value = "Place bid">
-            </form>
+    <!-- Check to see if the listing was already closed -->
+    {% if winner == 1 %}
+        <h4>The winner of the auction is {{ bid_object.current_bidder }}</h4>
     {% endif %}
-    
+    <!-- Check for seeing if the creator of the listing is currently logged in -->
+    {% if closed == 1 %} 
+        <!-- Check to see whether the listing was already closed, then button to close listing need not be generated. -->
+        {% if listing.closed != 1 %}                                                               
+            <br><button><a href = "{% url 'close' listing.id %}">Close Listing</a></button>
+            <h4>Current Bid:{{ bid_object.bid }}</h4>
+        {% endif %}
+    {% else %}
+        <h4>Current Bid:{{ bid_object.bid }}</h4>
+    {% endif %}
+    {% if user.is_authenticated %}
+            <!-- Check to see if the creator of the listing is viewing the page, then the below code doesn't need to be generated. -->
+            {% if closed != 1 %}   
+                <!-- We do one more check to see if the auction has already been closed or not.If it is already closed then we shouldn't allow the user to bid on the product anymore. -->
+                {% if listing.closed != 1 %}
+                    <form action = "{% url 'bidding' listing.id %}" method = "POST">
+                        {% csrf_token %}
+                        <input type = "text" placeholder="Enter a bid" name = "bid_value">
+                        <input type = "submit" value = "Place bid">
+                    </form>
+                {% endif %}
+            {% endif %}
+    {% endif %}
+    <hr id = "comment-divider">
+    <h2><b>Comments</b></h2>
+    <!-- Text box to enter the comment is displayed only if a user is logged in -->
+    {% if user.is_authenticated %}
+        <form action = "{% url 'comment' listing.id %}" method = "POST">
+            {% csrf_token %}
+            <textarea id = "contents" name="content" rows = "3" cols = "100" placeholder="Enter a comment"></textarea><br>
+            <input type = "submit" value = "Comment">
+        </form>
+    {% endif %}
+    <hr>
+    {% for comment in comments %}
+        <b>{{ comment.user.username }}:</b> {{ comment.content }}
+        <hr>
+    {% endfor %}
+
 {% endblock %}
 

@@ -1,0 +1,15 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 id = "listing" >Watchlist</h2>
+        <div class = "container">
+        {% for listing in listings %}
+        <div>
+            <h3><a href = "{% url 'listing' listing.id %}">{{ listing.title }}</a></h3>
+            <img src = "{{ listing.url }}" width = "200" height="200"><br>
+            Description: {{ listing.description }}
+        </div>
+        {% endfor %}
+        </div>
+    
+{% endblock %}
